@@ -1,0 +1,35 @@
+#include <algorithm>
+#include <iostream>
+#include <vector>
+
+using namespace std;
+void solve(int arr[],int n){
+int i=0;
+int sum=0;
+ int largest=INT_MIN;
+ //BRUTE
+// for(int i=0;i<n;i++){
+// 	sum=arr[i];
+// 	for(int j=i+1;j<n;j++){
+// 		sum+=arr[j];
+// 		largest=max(largest,sum);
+// 	}
+// }
+//OPTIMIZE
+while(i<n){
+	sum+=arr[i];
+	largest=max(largest,sum);
+	//yaha pe 
+	if(sum<0)sum=0;
+	i++;
+}
+cout<<largest;
+}
+int main() {
+	// Your code goes here;
+int n=5;
+
+int arr1[]={1,2,3,-2,5};
+solve(arr1,n);
+	return 0;
+}
