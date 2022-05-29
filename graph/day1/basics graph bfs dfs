@@ -1,0 +1,155 @@
+
+
+##################     For  creating simple grap I have used vector<int>adj[] way.   ############################
+
+bfs:
+   1.take a source point mark it visited and iterate for its childrena and store in queue.
+   2.after you iterate for source point childeren move to first value from queue that's give src point children as src point iterate them.
+   
+dfs:
+   1.take a source point iterate its children and while iterating its children first  value take it as a src point ad iterate its children 
+   2.That means iterate to depth of a node till we have all visited node
+   3.pura depth tak jana agar jate waqt koi number already visited the come back and iterate next.
+   
+ main file 
+  ||||
+ \\\///
+  \\//
+   \/
+#include<bits/stdc++.h>
+
+using namespace std;
+void addEdge(vector<int>adj[],int x,int y){
+	adj[x].push_back(y);
+	adj[y].push_back(x);
+}                                             BFS
+
+                                             ||||
+                                           \\\\////
+                                            \\\///
+                                             \\//
+                                              \/
+                    *******BFS*********
+//////////////////////////////////////////////////////////////////////////////////////////////
+void bfs(vector<int>adj[],int v){
+	vector<int>vis(v,0);
+	queue<int>q;
+	q.push(0);                             //push(src)to queue
+	vis[0]=1;
+	while(!q.empty()){
+		int head=q.front();
+		cout<<head<<" ";
+		q.pop();
+		vector<int>::iterator it;
+		for(it=adj[head].begin();it!=adj[head].end();++it){
+			if(!vis[*it]){
+                vis[*it]=1;
+				q.push(*it);
+			}
+		}
+	} 
+}                                     DFS
+                                      ||||
+                                   \\\\\/////
+                                    \\\\////
+                                     \\\///
+                                      \\//
+                                       \/
+
+          ***********DFS**********
+//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\//////////////\\\\\\\\\\\\
+map<int,bool>vis;
+void dfs(vector<int>adj[],int v,int src){
+vis[src]=true;
+cout<<src<<" ";
+vector<int>::iterator it;
+		for(it=adj[src].begin();it!=adj[src].end();++it){
+			if(vis[*it]){}
+			else{
+              dfs(adj,v,*it);
+			}
+		}
+///////////////////////////////////////////////////////////////////
+int main() {
+	// Your code goes here;
+	int v=5;
+vector<int>adj[v];
+    addEdge(adj,0, 1);
+    addEdge(adj,0, 2);
+    addEdge(adj,1, 2);
+    addEdge(adj,2, 0);
+    addEdge(adj,2, 3);
+    addEdge(adj,3, 3);
+ bfs(adj,v);
+
+dfs(adj,v,2);
+
+	return 0;
+}
+
+
+
+
+      XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        TOPOLOGICAL SORT(only applicable for directed acyclic graph)
+      <<<<<<--------------------------------------------------->>>>>
+    
+    Algo:
+    1.while making graph create indegree value seperately.
+    2.store all indegree==0(it does not have outgiong edge) value in queue and iterate all its children 
+    3.while iterating decrese indegree of their children and store in queue.
+      
+     
+    #include<bits/stdc++.h>
+
+using namespace std;
+vector<int>indegree(5,0);
+void addEdge(vector<int>adj[],int x,int y){
+	adj[x].push_back(y);
+    indegree[y]++;
+}
+
+void topological(vector<int>adj[],int v){
+	queue<int>q;
+	for(int i=0;i<v;i++){
+		if(indegree[i]==0){
+			q.push(i);
+		}
+	}
+	while(!q.empty()){
+		int x=q.front();
+		cout<<x<<" ";
+		q.pop();
+		for(auto it:adj[x]){
+			indegree[it]--;
+			if(indegree[it]==0)q.push(it);
+		}
+	}
+}
+int main() {
+	// Your code goes here;
+	int v=3;
+vector<int>adj[v];
+    addEdge(adj,0, 1);
+    // addEdge(adj,0, 2);
+    addEdge(adj,1, 2);
+    // addEdge(adj,2, 0);
+    addEdge(adj,2, 0);
+    // addEdge(adj,3, 3);
+topological(adj,v);
+// for(int i=0;i<v;i++){
+// 	cout<<i;
+// 	for(auto x:adj[i]){
+// 		cout<<"-->"<<x;
+// 	}
+// 	cout<<endl;
+// }
+	return 0;
+}
+
+
+
+
+
+
+
