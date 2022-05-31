@@ -1,0 +1,82 @@
+:::::::::::::::TOPOLOGY SORT:::::::::::::
+~~~~~~~~~~Algo~~~~~~~~~~~~
+1.while creating a graph we also maintain indegree array which store indegree   .............[INDEGREE](matlab us node se no incomin edge but have only outgoing edge}.
+2.we use dfs approach to iterate graph and decrease indegree to find next order in topology
+
+
+''''''''''''''''''''CYCLE detection indirected graph(toplogy)
+ise code me agar graph me cycle hoga toh koi order print hi nahi hoga 
+
+--------------------CYCLE DETECTION(using dfs)----------------------------------
+================ALGO===============
+1.take a node from graph and check if it is visited if not visited then check using it as src point if cycle detect(FUnc)
+2.In cycle function mark src as vis and search for its children and check if not visited the recusive check for cycle detect fromits children node.
+
+
+
+>>>>::::::::::::::::::::::::::::::::::::::::CODE::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+#include<bits/stdc++.h>
+
+using namespace std;
+int v=3,e=3;
+vector<int>indeg(v);
+void addEdge(int x,int y,vector<int>adj[]){
+	adj[x].push_back(y);
+	indeg[y]++;
+}
+:::::::::::::::::::::>>>>>>>>>>>>>>Topology Function>>>>>>>>>>>>>:::::::::::::::::::::::::::::
+void topology(vector<int>adj[]){
+	queue<int>q;
+	int cnt=0;
+	for(int i=0;i<v;i++){
+		if(indeg[i]==0){
+			q.push(i);
+		}
+	}
+	while(!q.empty()){
+		cnt++;
+		int x=q.front();
+		q.pop();
+		cout<<x<<" ";
+		for(auto it:adj[x]){
+			indeg[it]--;
+			if(indeg[it]==0)q.push(it);
+		}
+	}
+	
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~CYCLE Detection USing Dfs~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+bool cycle(vector<int>adj[],vector<int>&vis,int src,int parent){
+	vis[src]=1;
+	for(auto x:adj[src]){
+		if(x!=parent){
+		if(vis[x])return true;
+		if(!vis[x] && cycle(adj,vis,x,src))return true;
+		}
+	}
+	return false;
+}
+int main() {
+	// Your code goes here;
+	
+    vector<int>adj[e];
+  	addEdge(0, 1,adj);
+    addEdge(1, 2,adj);
+    addEdge(2, 0,adj);
+    addEdge(1, 3,adj);
+    addEdge(2, 3,adj);
+    addEdge(2, 4,adj);
+	 addEdge(2, 5,adj);
+	  addEdge(3, 4,adj);
+    addEdge(3, 5,adj);
+    addEdge(4, 5,adj);
+    vector<int>vis(v);
+	bool cyc=false;
+    for(int i=0;i<v;i++){
+		if(!vis[i] && cycle(adj,vis,i,-1))
+		   cyc=true;
+	}
+	cout<<cyc;
+     topology(adj);
+	return 0;
+}
